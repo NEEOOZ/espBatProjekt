@@ -17,6 +17,10 @@
 #include "sensesp/signalk/signalk_output.h"
 #include "sensesp/system/lambda_consumer.h"
 #include "sensesp_app_builder.h"
+<<<<<<< HEAD
+=======
+#include "ds18b20_temperature.h"
+>>>>>>> 9d53a29 (Initial commit)
 
 using namespace sensesp;
 
@@ -28,7 +32,11 @@ void setup() {
   SensESPAppBuilder builder;
   sensesp_app = (&builder)
                     // Set a custom hostname for the app.
+<<<<<<< HEAD
                     ->set_hostname("mitt-sensesp-projekt Test 11")
+=======
+                    ->set_hostname("mitt-sensesp-projekt-251219")
+>>>>>>> 9d53a29 (Initial commit)
                     // Optionally, hard-code the WiFi and Signal K server
                     // settings. This is normally not needed.
                     //->set_wifi_client("My WiFi SSID", "my_wifi_password")
@@ -133,7 +141,33 @@ void setup() {
       ->set_sort_order(200);
 
   digital_input2->connect_to(di2_sk_output);
+<<<<<<< HEAD
 
+=======
+//här börjar jag skap agen kod för att mäta teperatur med en dallas sensor
+auto temp_sensor = std::make_shared<sensesp::DS18B20Temperature>(34, 1000);
+
+auto temp_metadata = std::make_shared<SKMetadata>("C", "Outside temperature");
+auto temp_sk_output = std::make_shared<SKOutput<float>>(
+    "environment.outside.temperature",
+    "/Sensors/Temperature",
+    temp_metadata
+);
+
+ConfigItem(temp_sk_output)
+    ->set_title("Temperature SK Output Path")
+    ->set_sort_order(300);
+
+temp_sensor->connect_to(temp_sk_output);
+
+//test
+temp_sensor->attach([temp_sensor]() {
+  debugD("DS18B20 temp C: %f", temp_sensor->get());
+});
+
+
+//här slutar jag skap agen kod för att mäta teperatur med en dallas sensor
+>>>>>>> 9d53a29 (Initial commit)
   // To avoid garbage collecting all shared pointers created in setup(),
   // loop from here.
   while (true) {
